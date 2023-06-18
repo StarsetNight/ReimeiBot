@@ -42,7 +42,7 @@ del_permission = on_command(("/permission", "remove"), rule=globalWhitelisted,
 @driver.on_startup
 async def startup():
     global connection, cursor
-    connection = sqlite3.connect("ReimeiBotDatabases/ReimeiBotPluginSettings.db")
+    connection = sqlite3.connect("reimei_databases/ReimeiBotPluginSettings.db")
     cursor = connection.cursor()
 
     # 如果表不存在，初始化表

@@ -28,9 +28,9 @@ drop_connection = on_command(("/db", "dc"), rule=globalWhitelisted,
 async def newConnection(args: Message = CommandArg()):
     global connection, cursor
     if path := args.extract_plain_text().strip():
-        connection = sqlite3.connect(os.path.join("./ReimeiBotDatabases/", path))
+        connection = sqlite3.connect(os.path.join("./reimei_databases/", path))
         cursor = connection.cursor()
-        await new_connection.finish(f"哒！成功连接到数据库“{os.path.join('./ReimeiBotDatabases/', path)}”！")
+        await new_connection.finish(f"哒！成功连接到数据库“{os.path.join('./reimei_databases/', path)}”！")
     else:
         await new_connection.finish("咱连接数据库得加上数据库文件名嗷！")
 

@@ -2,8 +2,8 @@ import nonebot
 import os
 from nonebot.adapters.onebot.v11 import Adapter as ONEBOT_V11Adapter
 
-if not os.path.exists("ReimeiBotDatabases/"):
-    os.mkdir("ReimeiBotDatabases/")
+if not os.path.exists("reimei_databases/"):
+    os.mkdir("reimei_databases/")
 
 nonebot.init()
 
