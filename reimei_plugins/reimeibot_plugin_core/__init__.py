@@ -8,7 +8,7 @@ from .config import Config
 
 nonebot.require("reimeibot_plugin_settings")
 
-from .rule import globalWhitelisted
+from reimei_api.rule import globalWhitelisted
 
 # from nonebot_plugin_apscheduler import scheduler
 

@@ -6,8 +6,8 @@ from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
 from .config import Config
-from ReimeiBotSRC.plugins.reimeibot_plugin_core.rule import globalWhitelisted
-from ReimeiBotSRC.plugins.reimeibot_plugin_core.permission import isMaintainer
+from reimei_api.rule import globalWhitelisted
+from reimei_api.permission import isMaintainer
 
 driver = nonebot.get_driver()
 global_config = driver.config

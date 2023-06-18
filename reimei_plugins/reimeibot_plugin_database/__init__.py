@@ -6,7 +6,7 @@ from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 
 from .config import Config
-from ReimeiBotSRC.plugins.reimeibot_plugin_core.rule import globalWhitelisted
+from reimei_api.rule import globalWhitelisted
 from ._permission import isAllowed
 
 driver = nonebot.get_driver()
