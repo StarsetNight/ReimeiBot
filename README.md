@@ -1,5 +1,5 @@
 # ReimeiBot
-There is an English version for reading: [English Version](https://github.com/3rdBit/ReimeiBot/README_EN.md)
+There is an English version for reading: [English Version](https://github.com/3rdBit/ReimeiBot/blob/master/README_EN.md)
 ## 开发说明
 本项目基于[Nonebot2](https://github.com/nonebot/nonebot2)，遵循[OneBot](https://onebot.dev)协议。  
 ReimeiBot使用MIT协议，允许商用。  
