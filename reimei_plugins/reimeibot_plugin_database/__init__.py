@@ -6,8 +6,9 @@ from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 
 from .config import Config
-from ReimeiBotSRC.plugins.reimeibot_plugin_core.rule import globalWhitelisted
 from ._permission import isAllowed
+from ._rule import isPassed
+from reimei_api.metadata import PluginMetadata
 
 driver = nonebot.get_driver()
 global_config = driver.config
@@ -16,11 +17,15 @@ config = Config.parse_obj(global_config)
 connection: sqlite3.Connection
 cursor: sqlite3.Cursor
 
-new_connection = on_command(("/db", "connect"), rule=globalWhitelisted,
+# 注册插件
+PluginMetadata("黎明数据库", "reimeibot_plugin_database", config.docs, "Advanced_Killer", True).register()
+
+# 事件合集
+new_connection = on_command(("/db", "connect"), rule=isPassed,
                             permission=isAllowed, aliases={"/连接数据库"}, priority=6, block=True)
-execute_command = on_command(("/db", "run"), rule=globalWhitelisted,
+execute_command = on_command(("/db", "run"), rule=isPassed,
                              permission=isAllowed, aliases={"/执行SQL命令", "/执行数据库命令"}, priority=6, block=True)
-drop_connection = on_command(("/db", "dc"), rule=globalWhitelisted,
+drop_connection = on_command(("/db", "dc"), rule=isPassed,
                              permission=isAllowed, aliases={"/断开连接", ("/db", "disconnect")}, priority=6, block=True)
 
 
@@ -28,9 +33,9 @@ drop_connection = on_command(("/db", "dc"), rule=globalWhitelisted,
 async def newConnection(args: Message = CommandArg()):
     global connection, cursor
     if path := args.extract_plain_text().strip():
-        connection = sqlite3.connect(os.path.join("./ReimeiBotDatabases/", path))
+        connection = sqlite3.connect(os.path.join("./reimei_databases/", path))
         cursor = connection.cursor()
-        await new_connection.finish(f"哒！成功连接到数据库“{os.path.join('./ReimeiBotDatabases/', path)}”！")
+        await new_connection.finish(f"哒！成功连接到数据库“{os.path.join('./reimei_databases/', path)}”！")
     else:
         await new_connection.finish("咱连接数据库得加上数据库文件名嗷！")
 
