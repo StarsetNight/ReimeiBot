@@ -1,6 +1,6 @@
 [project]
 name = "ReimeiBot"
-version = "0.1.0"
+version = "0.2.0"
 description = "ReimeiBot"
 readme = "README.md"
 requires-python = ">=3.10, <4.0"
@@ -10,4 +10,4 @@ adapters = [
     {name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11"},
 ]
 plugins = ["nonebot_plugin_apscheduler"]
-plugin_dirs = ["ReimeiBotSRC/plugins"]
+plugin_dirs = ["reimei_plugins"]

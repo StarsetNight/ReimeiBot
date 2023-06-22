@@ -6,8 +6,9 @@ from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
 from .config import Config
-from ReimeiBotSRC.plugins.reimeibot_plugin_core.rule import globalWhitelisted
-from ReimeiBotSRC.plugins.reimeibot_plugin_core.permission import isMaintainer
+from reimei_api.rule import globalWhitelisted
+from reimei_api.permission import isMaintainer
+from reimei_api.metadata import PluginMetadata
 
 driver = nonebot.get_driver()
 global_config = driver.config
@@ -20,6 +21,9 @@ global_config.global_whitelist = {}  # 全局白名单，一些通用插件可�
 
 connection: sqlite3.Connection
 cursor: sqlite3.Cursor
+
+# 注册插件
+PluginMetadata("黎明设定面板", "reimeibot_plugin_settings", config.docs, "Advanced_Killer", True).register()
 
 # 命令合集
 set_failsafe = on_command("/failsafe", permission=SUPERUSER, aliases={"/紧急备用设置"}, priority=10, block=True)
@@ -42,7 +46,7 @@ del_permission = on_command(("/permission", "remove"), rule=globalWhitelisted,
 @driver.on_startup
 async def startup():
     global connection, cursor
-    connection = sqlite3.connect("ReimeiBotDatabases/ReimeiBotPluginSettings.db")
+    connection = sqlite3.connect("reimei_databases/ReimeiBotPluginSettings.db")
     cursor = connection.cursor()
 
     # 如果表不存在，初始化表
