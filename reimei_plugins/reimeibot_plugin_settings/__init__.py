@@ -121,6 +121,8 @@ async def setPermission(args: Message = CommandArg()):
     args = args.extract_plain_text().strip().split(" ")
     if len(args) >= 2:
         if args[0].isdigit():
+            global_config.superusers.remove(args[0]) if args[0] in global_config.superusers else None
+            global_config.maintainers.remove(args[0]) if args[0] in global_config.maintainers else None
             match args[1]:
                 case "Superuser":
                     global_config.superusers.add(args[0])
