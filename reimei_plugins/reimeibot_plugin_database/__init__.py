@@ -44,6 +44,7 @@ async def newConnection(args: Message = CommandArg()):
 async def executeCommand(args: Message = CommandArg()):
     if command := args.extract_plain_text().strip():
         cursor.execute(command)
+        connection.commit()
         if response := cursor.fetchall():
             await new_connection.finish(str(response))
         else:
