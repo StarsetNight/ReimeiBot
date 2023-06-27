@@ -16,6 +16,9 @@ class PluginMetadata(object):
         self.developer = developer
         self.enabled = enabled
 
+    def __bool__(self):
+        return self.enabled
+
     def register(self):
         global_config.plugins_metadata[self.package_name] = self  # 注册此插件元数据至全局元数据列表
 

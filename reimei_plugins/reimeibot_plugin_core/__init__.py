@@ -42,7 +42,7 @@ async def pluginList():
     string_list = "====ReimeiBot插件列表====\n"
     for index, metadata in enumerate(global_config.plugins_metadata.values()):
         string_list += (f"{index}. {metadata.plugin_name}（{metadata.package_name}）"
-                        f"[{'启用' if metadata.enabled else '禁用'}]\n\n")
+                        f"[{'启用' if metadata else '禁用'}]\n\n")
     await plugin_list.finish(string_list)
 
 
@@ -63,9 +63,9 @@ async def pluginInspect(args: Message = CommandArg()):
         if package in config.system_plugins:
             await plugin_inspect.finish(f"插件包 {package} 为黎明系统插件，不可禁用哦！")
         if package in global_config.plugins_metadata:
-            global_config.plugins_metadata[package].enabled = not global_config.plugins_metadata[package].enabled
+            global_config.plugins_metadata[package].enabled = not global_config.plugins_metadata[package]
             await plugin_inspect.finish(f"插件包 {package} 的开关已成功"
-                                        f"{'启用' if global_config.plugins_metadata[package].enabled else '禁用'}"
+                                        f"{'启用' if global_config.plugins_metadata[package] else '禁用'}"
                                         f"了哦！")
         else:
             await plugin_help.finish(f"插件包 {package} 不存在哦~")
