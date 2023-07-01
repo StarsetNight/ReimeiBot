@@ -8,6 +8,6 @@ async def isEnabled():
     """
     :return: 插件是否被启用
     """
-    return global_config.plugins_metadata["reimeibot_plugin_database"]
+    return nonebot.get_plugin("reimeibot_plugin_database").metadata.extra["Enabled"]
 
 isPassed = Rule(isEnabled, globalWhitelisted)
