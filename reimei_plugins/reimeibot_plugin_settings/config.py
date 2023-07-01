@@ -9,14 +9,15 @@ class Config(BaseModel, extra=Extra.ignore):
     failsafe_group = ""  # 紧急备用群聊，不设置入数据库的原因是这是个很重要的设置
 
     # 文档
-    docs = """【ReimeiBot设置系统】
+    docs = """【ReimeiBot设定系统】
 /failsafe <group>：将紧急安全后备群聊号设置为group
 /whitelist.add <group>：添加白名单
 /whitelist.list：列出白名单
 /whitelist.remove <group>：移除白名单
 /permission.set <qq> <permission>：设置权限
 /permission.get <qq>：获取权限
-/permission.remove <qq>：移除权限"""
+/permission.remove <qq>：移除权限
+/settings.help：获取设定帮助"""
 
     # SQL命令
     # # 初始化表
