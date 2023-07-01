@@ -8,7 +8,8 @@ from nonebot.permission import SUPERUSER
 from .config import Config
 from reimei_api.rule import globalWhitelisted
 from reimei_api.permission import isMaintainer
-from reimei_api.metadata import PluginMetadata
+from reimei_api.help import getHelp
+from nonebot.plugin import PluginMetadata
 
 driver = nonebot.get_driver()
 global_config = driver.config
@@ -23,7 +24,15 @@ connection: sqlite3.Connection
 cursor: sqlite3.Cursor
 
 # 注册插件
-PluginMetadata("黎明设定面板", "reimeibot_plugin_settings", config.docs, "Advanced_Killer", True).register()
+__plugin_meta__ = PluginMetadata(
+    name="Reimei设定",
+    description="ReimeiBot设定系统",
+    usage=config.docs,
+    config=Config,
+    extra={
+        "Enabled": True
+    },
+)
 
 # 命令合集
 set_failsafe = on_command("/failsafe", permission=SUPERUSER, aliases={"/紧急备用设置"}, priority=10, block=True)
@@ -41,6 +50,9 @@ get_permission = on_command(("/permission", "get"), rule=globalWhitelisted,
                             permission=SUPERUSER, aliases={"/获取权限"}, priority=10, block=True)
 del_permission = on_command(("/permission", "remove"), rule=globalWhitelisted,
                             permission=SUPERUSER, aliases={"/移除权限"}, priority=10, block=True)
+
+get_help = on_command(("/settings", "help"), rule=globalWhitelisted,
+                      permission=SUPERUSER, aliases={"/设定帮助"}, priority=10, block=True)
 
 
 @driver.on_startup
@@ -121,6 +133,8 @@ async def setPermission(args: Message = CommandArg()):
     args = args.extract_plain_text().strip().split(" ")
     if len(args) >= 2:
         if args[0].isdigit():
+            global_config.superusers.remove(args[0]) if args[0] in global_config.superusers else None
+            global_config.maintainers.remove(args[0]) if args[0] in global_config.maintainers else None
             match args[1]:
                 case "Superuser":
                     global_config.superusers.add(args[0])
@@ -164,3 +178,8 @@ async def delPermission(args: Message = CommandArg()):
             global_config.maintainers.remove(qq) if qq in global_config.maintainers else None
     else:
         await add_whitelist.finish(f"{args[0]}不是纯数字形式哦！不可以删除权限呐~")
+
+
+@get_help.handle()
+async def getDatabaseHelp():
+    await get_help.finish(await getHelp("reimeibot_plugin_settings"))

@@ -8,4 +8,5 @@ class Config(BaseModel, extra=Extra.ignore):
     docs = """【ReimeiBot数据库管理系统】
 /db.connect <file>：连接数据库
 /db.run <SQL command>：执行命令
-/db.dc：断开与数据库的连接"""
+/db.dc：断开与数据库的连接
+/db.help：获取数据库帮助"""

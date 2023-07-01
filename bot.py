@@ -14,7 +14,6 @@ driver.register_adapter(ONEBOT_V11Adapter)
 # SETTINGS
 config.command_start = {""}
 config.command_sep = {"."}
-config.plugins_metadata = {}  # 插件元数据合集，类型为dict[str, PluginMetadata]
 
 
 nonebot.load_from_toml("pyproject.toml")
