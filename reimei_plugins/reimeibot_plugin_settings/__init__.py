@@ -123,9 +123,9 @@ async def removeWhitelist(args: Message = CommandArg()):
         global_config.global_whitelist.remove(group_id)
         cursor.execute(config.del_whitelist, (group_id,))
         connection.commit()
-        await add_whitelist.finish(f"群聊{group_id}已经从全局白名单移除了哦！")
+        await del_whitelist.finish(f"群聊{group_id}已经从全局白名单移除了哦！")
     else:
-        await add_whitelist.finish(f"{group_id}不是纯数字形式哦！不可以从全局白名单移除呐~")
+        await del_whitelist.finish(f"{group_id}不是纯数字形式哦！不可以从全局白名单移除呐~")
 
 
 @set_permission.handle()
@@ -142,11 +142,11 @@ async def setPermission(args: Message = CommandArg()):
                     global_config.maintainers.add(args[0])
             cursor.execute(config.set_permission, args)
             connection.commit()
-            await add_whitelist.finish(f"用户{args[0]}的权限已经被设置为了{args[1]}哦！")
+            await set_permission.finish(f"用户{args[0]}的权限已经被设置为了{args[1]}哦！")
         else:
-            await add_whitelist.finish(f"{args[0]}不是纯数字形式哦！不可以添加权限呐~")
+            await set_permission.finish(f"{args[0]}不是纯数字形式哦！不可以添加权限呐~")
     else:
-        await add_whitelist.finish("不对，不对！正确的命令形式应当为“/permission.set <QQ号> <权限>”才对！")
+        await set_permission.finish("不对，不对！正确的命令形式应当为“/permission.set <QQ号> <权限>”才对！")
 
 
 @get_permission.handle()
@@ -156,11 +156,11 @@ async def getPermission(args: Message = CommandArg()):
             cursor.execute(config.get_permission, (qq,))
             connection.commit()
         except sqlite3.OperationalError:
-            await add_whitelist.finish(f"用户{qq}没有权限呐~")
+            await get_permission.finish(f"用户{qq}没有权限呐~")
         else:
-            await add_whitelist.finish(f"用户{qq}的权限是{cursor.fetchone()[0]}哦！")
+            await get_permission.finish(f"用户{qq}的权限是{cursor.fetchone()[0]}哦！")
     else:
-        await add_whitelist.finish(f"{args[0]}不是纯数字形式哦！不可以获取权限呐~")
+        await get_permission.finish(f"{args[0]}不是纯数字形式哦！不可以获取权限呐~")
 
 
 @del_permission.handle()
@@ -170,14 +170,14 @@ async def delPermission(args: Message = CommandArg()):
             cursor.execute(config.del_permission, (qq,))
             connection.commit()
         except sqlite3.OperationalError:
-            await add_whitelist.finish(f"用户{qq}没有权限呐~")
+            await del_permission.finish(f"用户{qq}没有权限呐~")
         else:
-            await add_whitelist.finish(f"用户{qq}的权限成功被移除了哦！")
+            await del_permission.finish(f"用户{qq}的权限成功被移除了哦！")
         finally:
             global_config.superusers.remove(qq) if qq in global_config.superusers else None
             global_config.maintainers.remove(qq) if qq in global_config.maintainers else None
     else:
-        await add_whitelist.finish(f"{args[0]}不是纯数字形式哦！不可以删除权限呐~")
+        await del_permission.finish(f"{args[0]}不是纯数字形式哦！不可以删除权限呐~")
 
 
 @get_help.handle()
