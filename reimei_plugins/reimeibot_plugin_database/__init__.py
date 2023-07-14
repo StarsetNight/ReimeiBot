@@ -67,11 +67,11 @@ async def executeCommand(args: Message = CommandArg()):
         cursor.execute(command)
         connection.commit()
         if response := cursor.fetchall():
-            await new_connection.finish(str(response))
+            await execute_command.finish(str(response))
         else:
-            await new_connection.finish("SQL命令成功执行！")
+            await execute_command.finish("SQL命令成功执行！")
     else:
-        await new_connection.finish("呜哇！没有命令怎么执行命令的啦？")
+        await execute_command.finish("呜哇！没有命令怎么执行命令的啦？")
 
 
 @drop_connection.handle()
