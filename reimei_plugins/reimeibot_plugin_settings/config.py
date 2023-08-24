@@ -14,6 +14,9 @@ class Config(BaseModel, extra=Extra.ignore):
 /whitelist.add <group>：添加白名单
 /whitelist.list：列出白名单
 /whitelist.remove <group>：移除白名单
+/blacklist.add <qq>：添加黑名单
+/blacklist.del <qq>：移除黑名单
+/blacklist.lookup：列出黑名单
 /permission.set <qq> <permission>：设置权限
 /permission.get <qq>：获取权限
 /permission.remove <qq>：移除权限

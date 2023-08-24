@@ -31,11 +31,11 @@ __plugin_meta__ = PluginMetadata(
 
 # 事件合集
 db_command_group = CommandGroup("/db", rule=isPassed, permission=isAllowed, priority=6, block=True)
-new_connection = db_command_group.command("connect", aliases={"/连接数据库"})
-list_databases = db_command_group.command("list", aliases={"/列出数据库"})
-execute_command = db_command_group.command("run", aliases={"/执行SQL命令", "/执行数据库命令"})
-drop_connection = db_command_group.command("dc", aliases={"/断开连接", ("/db", "disconnect")})
-get_help = db_command_group.command("help", aliases={"数据库帮助"})
+new_connection = db_command_group.command("connect ", aliases={"/连接数据库 "})
+list_databases = db_command_group.command("list ", aliases={"/列出数据库 "})
+execute_command = db_command_group.command("run ", aliases={"/执行SQL命令 ", "/执行数据库命令 "})
+drop_connection = db_command_group.command("dc ", aliases={"/断开连接 ", ("/db", "disconnect ")})
+get_help = db_command_group.command("help ", aliases={"数据库帮助 "})
 
 
 @new_connection.handle()
