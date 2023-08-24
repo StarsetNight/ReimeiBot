@@ -35,6 +35,10 @@ class Config(BaseModel, extra=Extra.ignore):
     VALUE TEXT NOT NULL,
     REMARK TEXT
     );"""
+    initialize_blacklist = """CREATE TABLE IF NOT EXISTS BLACKLIST(
+    QQ TEXT UNIQUE NOT NULL,
+    REMARK TEXT
+    );"""
 
     # # 白名单操作
     add_whitelist = "INSERT INTO WHITELIST (SESSION) VALUES (?)"
@@ -53,3 +57,8 @@ class Config(BaseModel, extra=Extra.ignore):
     get_option = "SELECT VALUE FROM SETTINGS WHERE KEY = ?"
     set_option = "UPDATE SETTINGS SET VALUE = ? WHERE KEY = ?"
     del_option = "DELETE FROM SETTINGS WHERE KEY = ?"
+
+    # 黑名单操作
+    blacklist_add = "INSERT INTO BLACKLIST (QQ) VALUES (?);"
+    blacklist_del = "DELETE FROM BLACKLIST WHERE QQ = ?;"
+    blacklist_get = "SELECT QQ FROM BLACKLIST"

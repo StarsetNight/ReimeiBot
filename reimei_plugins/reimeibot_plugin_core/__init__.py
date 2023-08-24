@@ -1,6 +1,6 @@
 import nonebot
 from nonebot import get_driver
-from nonebot import on_command
+from nonebot import on_command, CommandGroup
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
@@ -29,12 +29,10 @@ __plugin_meta__ = PluginMetadata(
 # 事件合集
 debug = on_command("/debug", rule=globalWhitelisted,
                    permission=SUPERUSER, aliases={"/调试"}, priority=10, block=True)
-plugin_list = on_command(("/plugin", "list"), rule=globalWhitelisted,
-                         aliases={"/插件列表"}, priority=10, block=True)
-plugin_help = on_command(("/plugin", "help"), rule=globalWhitelisted,
-                         aliases={"/帮助", "/help"}, priority=10, block=True)
-plugin_turn = on_command(("/plugin", "turn"), rule=globalWhitelisted,
-                            permission=isMaintainer, aliases={"/开关插件"}, priority=10, block=True)
+plugin_command_group = CommandGroup("/plugin", rule=globalWhitelisted, priority=10, block=True)
+plugin_list = plugin_command_group.command("list", aliases={"/插件列表"})
+plugin_help = plugin_command_group.command("help", aliases={"/帮助", "/help"})
+plugin_turn = plugin_command_group.command("turn", aliases={"/开关插件"}, permission=isMaintainer)
 
 
 @debug.handle()

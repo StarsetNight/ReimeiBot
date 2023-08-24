@@ -1,7 +1,7 @@
 import nonebot
 import os
 import sqlite3
-from nonebot import on_command
+from nonebot import on_command, CommandGroup
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 
@@ -30,16 +30,12 @@ __plugin_meta__ = PluginMetadata(
 )
 
 # 事件合集
-new_connection = on_command(("/db", "connect"), rule=isPassed,
-                            permission=isAllowed, aliases={"/连接数据库"}, priority=6, block=True)
-list_databases = on_command(("/db", "list"), rule=isPassed,
-                            permission=isAllowed, aliases={"/列出数据库"}, priority=6, block=True)
-execute_command = on_command(("/db", "run"), rule=isPassed,
-                             permission=isAllowed, aliases={"/执行SQL命令", "/执行数据库命令"}, priority=6, block=True)
-drop_connection = on_command(("/db", "dc"), rule=isPassed,
-                             permission=isAllowed, aliases={"/断开连接", ("/db", "disconnect")}, priority=6, block=True)
-get_help = on_command(("/db", "help"), rule=isPassed,
-                      permission=isAllowed, aliases={"/数据库帮助"}, priority=6, block=True)
+db_command_group = CommandGroup("/db", rule=isPassed, permission=isAllowed, priority=6, block=True)
+new_connection = db_command_group.command("connect", aliases={"/连接数据库"})
+list_databases = db_command_group.command("list", aliases={"/列出数据库"})
+execute_command = db_command_group.command("run", aliases={"/执行SQL命令", "/执行数据库命令"})
+drop_connection = db_command_group.command("dc", aliases={"/断开连接", ("/db", "disconnect")})
+get_help = db_command_group.command("help", aliases={"数据库帮助"})
 
 
 @new_connection.handle()

@@ -1,13 +1,14 @@
 import nonebot
 import sqlite3
-from nonebot import on_command
+from nonebot import on_command, CommandGroup
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
+from nonebot import on_message
 
 from .config import Config
 from reimei_api.rule import globalWhitelisted
-from reimei_api.permission import isMaintainer
+from reimei_api.permission import isMaintainer, isBaka
 from reimei_api.help import getHelp
 from nonebot.plugin import PluginMetadata
 
@@ -17,6 +18,7 @@ config = Config.parse_obj(global_config)
 
 global_config.superusers = {}  # 最高管理者
 global_config.maintainers = {}  # 维护员
+global_config.blacklist = {}  # 黑名单
 global_config.nickname = config.bot_nickname  # 昵称
 global_config.global_whitelist = {}  # 全局白名单，一些通用插件可以使用这个
 
@@ -37,19 +39,25 @@ __plugin_meta__ = PluginMetadata(
 # 命令合集
 set_failsafe = on_command("/failsafe", permission=SUPERUSER, aliases={"/紧急备用设置"}, priority=10, block=True)
 
-add_whitelist = on_command(("/whitelist", "add"), rule=globalWhitelisted,
-                           permission=isMaintainer, aliases={"/添加白名单"}, priority=10, block=True)
-get_whitelist = on_command(("/whitelist", "list"), rule=globalWhitelisted,
-                           permission=isMaintainer, aliases={"/列出白名单"}, priority=10, block=True)
-del_whitelist = on_command(("/whitelist", "remove"), rule=globalWhitelisted,
-                           permission=isMaintainer, aliases={"/移除白名单"}, priority=10, block=True)
+block = on_message(block=True, priority=1, permission=isBaka)
 
-set_permission = on_command(("/permission", "set"), rule=globalWhitelisted,
-                            permission=SUPERUSER, aliases={"/设置权限"}, priority=10, block=True)
-get_permission = on_command(("/permission", "get"), rule=globalWhitelisted,
-                            permission=SUPERUSER, aliases={"/获取权限"}, priority=10, block=True)
-del_permission = on_command(("/permission", "remove"), rule=globalWhitelisted,
-                            permission=SUPERUSER, aliases={"/移除权限"}, priority=10, block=True)
+whitelist_command_group = CommandGroup("/whitelist", priority=10, rule=globalWhitelisted, permission=isMaintainer,
+                                       block=True)
+add_whitelist = whitelist_command_group.command("add", aliases={"/添加白名单"})
+get_whitelist = whitelist_command_group.command("get", aliases={"/获取白名单"})
+del_whitelist = whitelist_command_group.command("del", aliases={"/移除白名单"})
+
+permission_command_group = CommandGroup("/permission", rule=globalWhitelisted, permission=SUPERUSER, priority=10,
+                                        block=True)
+set_permission = permission_command_group.command("set", aliases={"/设置权限"})
+get_permission = permission_command_group.command("get", aliases={'/获取权限'})
+del_permission = permission_command_group.command("remove", aliases={"/移除权限"})
+
+blacklist_command_group = CommandGroup("/blacklist", rule=globalWhitelisted, permission=SUPERUSER, priority=1
+                                       , block=True)
+blacklist_add = blacklist_command_group.command("add", aliases={"/黑名单添加"})
+blacklist_del = blacklist_command_group.command("del", aliases={"/黑名单移除"})
+blacklist_lookup = blacklist_command_group.command("lookup", aliases={"/列出黑名单"})
 
 get_help = on_command(("/settings", "help"), rule=globalWhitelisted,
                       permission=SUPERUSER, aliases={"/设定帮助"}, priority=10, block=True)
@@ -65,6 +73,7 @@ async def startup():
     cursor.execute(config.initialize_permission)
     cursor.execute(config.initialize_whitelist)
     cursor.execute(config.initialize_settings)
+    cursor.execute(config.initialize_blacklist)
     connection.commit()
 
     # 如果表早已存在，从表里面获取信息并写入到Nonebot全局配置池
@@ -74,7 +83,12 @@ async def startup():
     global_config.maintainers = {maintainer[0] for maintainer in maintainers}
     whitelist_groups = cursor.execute(config.get_whitelist).fetchall()
     global_config.global_whitelist = {whitelist_group[0] for whitelist_group in whitelist_groups}
-
+    blacklists = cursor.execute(config.blacklist_get)
+    global_config.blacklist = {blacklist[0] for blacklist in blacklists}
+    print(f"Superuser:{global_config.superusers}")
+    print(f"Maintainers:{global_config.maintainers}")
+    print(f"Whitelist:{global_config.global_whitelist}")
+    print(f"Blacklist:{global_config.blacklist}")
     # 设置一些东西
     global_config.failsafe_group = config.failsafe_group  # 紧急备用群聊
 
@@ -178,6 +192,38 @@ async def delPermission(args: Message = CommandArg()):
             global_config.maintainers.remove(qq) if qq in global_config.maintainers else None
     else:
         await del_permission.finish(f"{args[0]}不是纯数字形式哦！不可以删除权限呐~")
+
+
+@blacklist_add.handle()
+async def blacklist_add_handle(args: Message = CommandArg()):
+    if not (qq := args.extract_plain_text()).strip().isdigit():
+        blacklist_add.finish(f"{args[0]}不是纯数字形式哦！不可以拉黑呐~")
+    if qq in global_config.blacklist:
+        blacklist_add.finish(f"{qq}已经在黑名单了喵")
+    cursor.execute(config.blacklist_add, (qq,))
+    connection.commit()
+    global_config.blacklist.add(qq)
+    blacklist_add.finish("添加成功喵")
+
+
+@blacklist_del.handle()
+async def blacklist_del_handle(args: Message = CommandArg()):
+    if not (qq := args.extract_plain_text()).strip().strip():
+        blacklist_del.finish(f"{args[0]}不是纯数字形式哦！不可以解除拉黑呐~")
+    if not qq in global_config.blacklist:
+        blacklist_del.finish(f"{qq}不在黑名单了喵")
+    cursor.execute(config.blacklist_frl)
+    connection.commit()
+    global_config.blacklist.remove(qq)
+    blacklist_del.finish("移除成功喵")
+
+
+@blacklist_lookup.handle()
+async def blacklist_lookup_handle():
+    msg = ""
+    for i in global_config.blacklist:
+        msg = f"{msg}{i}\n"
+    blacklist_lookup.finish(f"黑名单：\n{msg}")
 
 
 @get_help.handle()
