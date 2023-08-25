@@ -8,7 +8,7 @@ from nonebot.params import CommandArg
 from reimei_api.help import getHelp
 from .config import Config
 from ._permission import isAllowed
-from ._rule import isPassed
+from ._rule import isEnabled
 from nonebot.plugin import PluginMetadata
 
 driver = nonebot.get_driver()
@@ -30,7 +30,7 @@ __plugin_meta__ = PluginMetadata(
 )
 
 # 事件合集
-db_command_group = CommandGroup("/db", rule=isPassed, permission=isAllowed, priority=6, block=True)
+db_command_group = CommandGroup("/db", rule=isEnabled, permission=isAllowed, priority=6, block=True)
 new_connection = db_command_group.command("connect ", aliases={"/连接数据库 "})
 list_databases = db_command_group.command("list ", aliases={"/列出数据库 "})
 execute_command = db_command_group.command("run ", aliases={"/执行SQL命令 ", "/执行数据库命令 "})

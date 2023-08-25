@@ -27,11 +27,10 @@ __plugin_meta__ = PluginMetadata(
 )
 
 # 事件合集
-debug = on_command("/debug ", rule=globalWhitelisted,
-                   permission=SUPERUSER, aliases={"/调试 "}, priority=10, block=True)
-plugin_command_group = CommandGroup("/plugin", rule=globalWhitelisted, priority=10, block=True)
-plugin_list = plugin_command_group.command("list ", aliases={"/插件列表 "})
-plugin_help = plugin_command_group.command("help ", aliases={"/帮助 ", "/help "})
+debug = on_command("/debug ", permission=SUPERUSER, aliases={"/调试 "}, priority=10, block=True)
+plugin_command_group = CommandGroup("/plugin", priority=10, block=True)
+plugin_list = plugin_command_group.command("list", aliases={"/插件列表"})
+plugin_help = plugin_command_group.command("help", aliases={"/帮助", "/help"})
 plugin_turn = plugin_command_group.command("turn ", aliases={"/开关插件 "}, permission=isMaintainer)
 
 

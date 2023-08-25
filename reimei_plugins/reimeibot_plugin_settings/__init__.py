@@ -38,30 +38,28 @@ __plugin_meta__ = PluginMetadata(
 )
 
 # 命令合集
-set_failsafe = on_command("/failsafe ", permission=SUPERUSER, aliases={"/紧急备用设置 "}, priority=10, block=True)
+on_message(block=True, priority=0, rule=globalWhitelisted)
+
+set_failsafe = on_command("/failsafe ", permission=SUPERUSER, aliases={"/紧急备用设置 "}, priority=-1, block=True)
 
 block = on_message(block=True, priority=1, permission=isBaka)
 
-whitelist_command_group = CommandGroup("/whitelist ", priority=10, rule=globalWhitelisted, permission=isMaintainer,
-                                       block=True)
+whitelist_command_group = CommandGroup("/whitelist", priority=10, permission=isMaintainer, block=True)
 add_whitelist = whitelist_command_group.command("add ", aliases={"/添加白名单 "})
-get_whitelist = whitelist_command_group.command("get ", aliases={"/获取白名单 "})
+get_whitelist = whitelist_command_group.command("get", aliases={"/获取白名单"})
 del_whitelist = whitelist_command_group.command("del ", aliases={"/移除白名单 "})
 
-permission_command_group = CommandGroup("/permission", rule=globalWhitelisted, permission=SUPERUSER, priority=10,
-                                        block=True)
+permission_command_group = CommandGroup("/permission", permission=SUPERUSER, priority=10, block=True)
 set_permission = permission_command_group.command("set ", aliases={"/设置权限 "})
 get_permission = permission_command_group.command("get ", aliases={'/获取权限 '})
 del_permission = permission_command_group.command("remove ", aliases={"/移除权限 "})
 
-blacklist_command_group = CommandGroup("/blacklist", rule=globalWhitelisted, permission=SUPERUSER, priority=1
-                                       , block=True)
+blacklist_command_group = CommandGroup("/blacklist", permission=SUPERUSER, priority=1, block=True)
 blacklist_add = blacklist_command_group.command("add", aliases={"/黑名单添加"})
 blacklist_del = blacklist_command_group.command("del", aliases={"/黑名单移除"})
 blacklist_lookup = blacklist_command_group.command("lookup", aliases={"/列出黑名单"})
 
-get_help = on_command(("/settings", "help"), rule=globalWhitelisted,
-                      permission=SUPERUSER, aliases={"/设定帮助"}, priority=10, block=True)
+get_help = on_command(("/settings", "help"), permission=SUPERUSER, aliases={"/设定帮助"}, priority=10, block=True)
 
 
 @driver.on_startup
