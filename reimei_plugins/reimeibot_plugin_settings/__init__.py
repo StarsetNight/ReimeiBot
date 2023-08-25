@@ -5,6 +5,7 @@ from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot import on_message
+from nonebot import logger
 
 from .config import Config
 from reimei_api.rule import globalWhitelisted
@@ -85,10 +86,10 @@ async def startup():
     global_config.global_whitelist = {whitelist_group[0] for whitelist_group in whitelist_groups}
     blacklists = cursor.execute(config.blacklist_get)
     global_config.blacklist = {blacklist[0] for blacklist in blacklists}
-    print(f"Superuser:{global_config.superusers}")
-    print(f"Maintainers:{global_config.maintainers}")
-    print(f"Whitelist:{global_config.global_whitelist}")
-    print(f"Blacklist:{global_config.blacklist}")
+    logger.info(f"Superuser:{global_config.superusers}")
+    logger.info(f"Maintainers:{global_config.maintainers}")
+    logger.info(f"Whitelist:{global_config.global_whitelist}")
+    logger.info(f"Blacklist:{global_config.blacklist}")
     # 设置一些东西
     global_config.failsafe_group = config.failsafe_group  # 紧急备用群聊
 

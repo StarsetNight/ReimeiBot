@@ -1,7 +1,7 @@
 import nonebot
 import os
 import sqlite3
-from nonebot import on_command, CommandGroup
+from nonebot import CommandGroup
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 
