@@ -8,3 +8,11 @@ async def isMaintainer(event: nonebot.adapters.Event):
     :return: 是否符合权限
     """
     return event.get_user_id() in global_config.maintainers or event.get_user_id() in global_config.superusers
+
+
+async def isBaka(event: nonebot.adapters.Event):
+    """
+    判断是否在黑名单中
+    :return: bool
+    """
+    return event.get_user_id() in global_config.blacklist

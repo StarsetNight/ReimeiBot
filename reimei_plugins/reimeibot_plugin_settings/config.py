@@ -14,6 +14,9 @@ class Config(BaseModel, extra=Extra.ignore):
 /whitelist.add <group>：添加白名单
 /whitelist.list：列出白名单
 /whitelist.remove <group>：移除白名单
+/blacklist.add <qq>：添加黑名单
+/blacklist.del <qq>：移除黑名单
+/blacklist.lookup：列出黑名单
 /permission.set <qq> <permission>：设置权限
 /permission.get <qq>：获取权限
 /permission.remove <qq>：移除权限
@@ -35,6 +38,10 @@ class Config(BaseModel, extra=Extra.ignore):
     VALUE TEXT NOT NULL,
     REMARK TEXT
     );"""
+    initialize_blacklist = """CREATE TABLE IF NOT EXISTS BLACKLIST(
+    QQ TEXT UNIQUE NOT NULL,
+    REMARK TEXT
+    );"""
 
     # # 白名单操作
     add_whitelist = "INSERT INTO WHITELIST (SESSION) VALUES (?)"
@@ -53,3 +60,8 @@ class Config(BaseModel, extra=Extra.ignore):
     get_option = "SELECT VALUE FROM SETTINGS WHERE KEY = ?"
     set_option = "UPDATE SETTINGS SET VALUE = ? WHERE KEY = ?"
     del_option = "DELETE FROM SETTINGS WHERE KEY = ?"
+
+    # 黑名单操作
+    blacklist_add = "INSERT INTO BLACKLIST (QQ) VALUES (?);"
+    blacklist_del = "DELETE FROM BLACKLIST WHERE QQ = ?;"
+    blacklist_get = "SELECT QQ FROM BLACKLIST"
