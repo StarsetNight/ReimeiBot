@@ -16,4 +16,4 @@ config.command_sep = {"."}
 nonebot.load_from_toml("pyproject.toml")
 
 if __name__ == "__main__":
-    nonebot.run(host="127.0.0.1", port=8080)
+    nonebot.run()
