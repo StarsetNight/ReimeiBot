@@ -1,6 +1,15 @@
+"""
+项目名称：ReimeiBot
+项目作者：StarsetNight（化名：何星夕，网名：星夕Starset）
+许可协议：MIT许可证
+
+版权所有 (c) 2023 星夕Starset
+依据MIT许可证效力，衍生项目需保证本版权声明原封不动，可以增添“原”前缀以免与您的衍生项目混淆
+"""
+
 import nonebot
 from nonebot import get_driver
-from nonebot import on_command
+from nonebot import on_command, CommandGroup
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
@@ -27,14 +36,11 @@ __plugin_meta__ = PluginMetadata(
 )
 
 # 事件合集
-debug = on_command("/debug", rule=globalWhitelisted,
-                   permission=SUPERUSER, aliases={"/调试"}, priority=10, block=True)
-plugin_list = on_command(("/plugin", "list"), rule=globalWhitelisted,
-                         aliases={"/插件列表"}, priority=10, block=True)
-plugin_help = on_command(("/plugin", "help"), rule=globalWhitelisted,
-                         aliases={"/帮助", "/help"}, priority=10, block=True)
-plugin_turn = on_command(("/plugin", "turn"), rule=globalWhitelisted,
-                            permission=isMaintainer, aliases={"/开关插件"}, priority=10, block=True)
+debug = on_command("/debug", permission=SUPERUSER, aliases={"/调试"}, priority=10, block=True)
+plugin_command_group = CommandGroup("/plugin", priority=10, block=True)
+plugin_list = plugin_command_group.command("list", aliases={"/插件列表"})
+plugin_help = plugin_command_group.command("help", aliases={"/帮助", "/help"})
+plugin_turn = plugin_command_group.command("turn ", aliases={"/开关插件 "}, permission=isMaintainer)
 
 
 @debug.handle()

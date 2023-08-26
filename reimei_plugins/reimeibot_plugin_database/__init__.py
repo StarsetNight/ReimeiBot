@@ -1,14 +1,23 @@
+"""
+项目名称：ReimeiBot
+项目作者：StarsetNight（化名：何星夕，网名：星夕Starset）
+许可协议：MIT许可证
+
+版权所有 (c) 2023 星夕Starset
+依据MIT许可证效力，衍生项目需保证本版权声明原封不动，可以增添“原”前缀以免与您的衍生项目混淆
+"""
+
 import nonebot
 import os
 import sqlite3
-from nonebot import on_command
+from nonebot import CommandGroup
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 
 from reimei_api.help import getHelp
 from .config import Config
 from ._permission import isAllowed
-from ._rule import isPassed
+from ._rule import isEnabled
 from nonebot.plugin import PluginMetadata
 
 driver = nonebot.get_driver()
@@ -30,16 +39,12 @@ __plugin_meta__ = PluginMetadata(
 )
 
 # 事件合集
-new_connection = on_command(("/db", "connect"), rule=isPassed,
-                            permission=isAllowed, aliases={"/连接数据库"}, priority=6, block=True)
-list_databases = on_command(("/db", "list"), rule=isPassed,
-                            permission=isAllowed, aliases={"/列出数据库"}, priority=6, block=True)
-execute_command = on_command(("/db", "run"), rule=isPassed,
-                             permission=isAllowed, aliases={"/执行SQL命令", "/执行数据库命令"}, priority=6, block=True)
-drop_connection = on_command(("/db", "dc"), rule=isPassed,
-                             permission=isAllowed, aliases={"/断开连接", ("/db", "disconnect")}, priority=6, block=True)
-get_help = on_command(("/db", "help"), rule=isPassed,
-                      permission=isAllowed, aliases={"/数据库帮助"}, priority=6, block=True)
+db_command_group = CommandGroup("/db", rule=isEnabled, permission=isAllowed, priority=6, block=True)
+new_connection = db_command_group.command("connect ", aliases={"/连接数据库 "})
+list_databases = db_command_group.command("list ", aliases={"/列出数据库 "})
+execute_command = db_command_group.command("run ", aliases={"/执行SQL命令 ", "/执行数据库命令 "})
+drop_connection = db_command_group.command("dc ", aliases={"/断开连接 ", ("/db", "disconnect ")})
+get_help = db_command_group.command("help ", aliases={"数据库帮助 "})
 
 
 @new_connection.handle()
@@ -67,11 +72,11 @@ async def executeCommand(args: Message = CommandArg()):
         cursor.execute(command)
         connection.commit()
         if response := cursor.fetchall():
-            await new_connection.finish(str(response))
+            await execute_command.finish(str(response))
         else:
-            await new_connection.finish("SQL命令成功执行！")
+            await execute_command.finish("SQL命令成功执行！")
     else:
-        await new_connection.finish("呜哇！没有命令怎么执行命令的啦？")
+        await execute_command.finish("呜哇！没有命令怎么执行命令的啦？")
 
 
 @drop_connection.handle()
