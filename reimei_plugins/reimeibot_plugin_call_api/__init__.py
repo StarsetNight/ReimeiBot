@@ -20,6 +20,7 @@ from reimei_api.permission import isMaintainer
 from config import Config
 
 from json import loads
+from json.decoder import JSONDecodeError
 
 driver = get_driver()
 global_config = driver.config
@@ -51,7 +52,10 @@ async def call_api_handle(bot: Bot, event: MessageEvent, args: Message = Command
         await call_api.finish(f"API返回值：{return_data}")
     if len(text_list) != 2:
         await call_api.finish("参数有误")
-    json_data = loads(text_list[1])
+    try:
+        json_data = loads(text_list[1])
+    except JSONDecodeError as error:
+        await call_api.finish(f"json数据错误:{error}")
     return_data = await bot.call_api(api=text_list[0], **json_data)
     logger.info(f"管理员{user_info.get('nickname')}({user_id})调用了API：{text_list[0]},参数：{json_data}")
     logger.info(f"API返回值：{return_data}")
