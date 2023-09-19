@@ -28,3 +28,22 @@ def CQ2dict(string: str) -> dict:
         data[value[0]] = value[1]
     CQ_json["data"] = data
     return CQ_json
+
+
+def msg2list(args: Message) -> list:
+    """
+    把Message转换为onebot的消息段数组格式的list
+    :return: list
+    """
+    args = list(args)
+    args = [str(i) for i in args]
+    msg_list = []
+    for i in args:
+        temp_dict = {}
+        if not re.findall(r"[CQ:.+?]", i):
+            temp_dict["type"] = "text"
+            temp_dict["data"] = {"text": i}
+        else:
+            temp_dict = CQ2dict(i)
+        msg_list.append(temp_dict)
+    return msg_list
