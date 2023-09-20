@@ -1,4 +1,5 @@
 import re
+from nonebot.adapters.onebot.v11 import Message
 
 
 async def get_at(string: str) -> int:
@@ -30,12 +31,15 @@ def CQ2dict(string: str) -> dict:
     return CQ_json
 
 
-def msg2list(args: Message) -> list:
+def msg2list(msg: Message | str) -> list:
     """
     把Message转换为onebot的消息段数组格式的list
     :return: list
     """
-    args = list(args)
+    if type(msg) == Message:
+        args = list(msg)
+    else:
+        args = list(Message(msg))
     args = [str(i) for i in args]
     msg_list = []
     for i in args:
@@ -47,3 +51,4 @@ def msg2list(args: Message) -> list:
             temp_dict = CQ2dict(i)
         msg_list.append(temp_dict)
     return msg_list
+
