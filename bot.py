@@ -7,8 +7,12 @@
 依据MIT许可证效力，衍生项目需保证本版权声明原封不动，可以增添“原”前缀以免与您的衍生项目混淆
 """
 
-import nonebot
+import nonebot, os
 from nonebot.adapters.onebot.v11 import Adapter as ONEBOT_V11Adapter
+
+# 确认数据文件夹存在
+if not os.path.exists("reimei_databases/"):
+    os.mkdir("reimei_databases/")
 
 
 nonebot.init()
