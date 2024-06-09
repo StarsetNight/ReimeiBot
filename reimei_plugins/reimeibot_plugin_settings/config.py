@@ -14,7 +14,7 @@ class Config(BaseModel, extra=Extra.ignore):
     """Plugin Config Here"""
 
     # 机器人核心设置
-    bot_nickname = {"星酱", "星桑"}  # 机器人昵称，自然语言处理会用到
+    bot_nickname = {"宵宫", "夕"}  # 机器人昵称，自然语言处理会用到
     failsafe_group = ""  # 紧急备用群聊，不设置入数据库的原因是这是个很重要的设置
 
     # 文档

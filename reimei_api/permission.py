@@ -24,4 +24,4 @@ async def isBaka(event: nonebot.adapters.Event):
     判断是否在黑名单中
     :return: bool
     """
-    return event.get_user_id() in global_config.blacklist
+    return event.get_user_id() in global_config.blacklist and not event.get_user_id() in global_config.superusers

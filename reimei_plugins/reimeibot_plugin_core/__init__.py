@@ -40,7 +40,7 @@ debug = on_command("/debug", permission=SUPERUSER, aliases={"/调试"}, priority
 plugin_command_group = CommandGroup("/plugin", priority=10, block=True)
 plugin_list = plugin_command_group.command("list", aliases={"/插件列表"})
 plugin_help = plugin_command_group.command("help", aliases={"/帮助", "/help"})
-plugin_turn = plugin_command_group.command("turn ", aliases={"/开关插件 "}, permission=isMaintainer)
+plugin_turn = plugin_command_group.command("turn", aliases={"/开关插件"}, permission=isMaintainer)
 
 
 @debug.handle()
@@ -57,11 +57,11 @@ async def pluginList():
     plugins: set[nonebot.plugin.Plugin] = nonebot.get_loaded_plugins()
     string_list = "====ReimeiBot插件列表====\n"
     for index, plugin in enumerate(plugins):
-        if plugin.metadata:
+        if "Enabled" in plugin.metadata.extra:
             string_list += (f"{index}. {plugin.metadata.name}（{plugin.name}）"
                             f"[{'启用' if plugin.metadata.extra['Enabled'] else '禁用'}]\n\n")
         else:
-            string_list += f"{index}. {plugin.name} [不支持ReimeiBot协议]"
+            string_list += f"{index}. {plugin.name} [不支持ReimeiBot协议]\n\n"
     await plugin_list.finish(string_list)
 
 
