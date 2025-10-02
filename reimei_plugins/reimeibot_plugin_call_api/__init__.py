@@ -6,7 +6,7 @@
 版权所有 (c) 2023 星夕Starset
 依据MIT许可证效力，衍生项目需保证本版权声明原封不动，可以增添“原”前缀以免与您的衍生项目混淆
 """
-from nonebot import get_driver
+from nonebot import get_driver, get_plugin_config
 from nonebot.plugin import PluginMetadata
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
@@ -24,7 +24,7 @@ from json.decoder import JSONDecodeError
 
 driver = get_driver()
 global_config = driver.config
-config = Config.parse_obj(global_config)
+config = get_plugin_config(Config)
 
 __plugin_meta__ = PluginMetadata(
     name="Reimei GoCQAPI",
