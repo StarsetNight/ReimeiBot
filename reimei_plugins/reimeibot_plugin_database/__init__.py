@@ -7,12 +7,15 @@
 依据MIT许可证效力，衍生项目需保证本版权声明原封不动，可以增添“原”前缀以免与您的衍生项目混淆
 """
 
-import nonebot
+
 import os
-import sqlite3
+
+import nonebot
 from nonebot import CommandGroup, get_plugin_config
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
+
+from libsql_client import Client, create_client
 
 from reimei_api.help import getHelp
 from .config import Config
@@ -24,8 +27,7 @@ driver = nonebot.get_driver()
 global_config = driver.config
 config = get_plugin_config(Config)
 
-connection: sqlite3.Connection
-cursor: sqlite3.Cursor
+client: Client
 
 # 注册插件
 __plugin_meta__ = PluginMetadata(
@@ -49,10 +51,9 @@ get_help = db_command_group.command("help", aliases={"数据库帮助 "})
 
 @new_connection.handle()
 async def newConnection(args: Message = CommandArg()):
-    global connection, cursor
+    global client
     if path := args.extract_plain_text().strip():
-        connection = sqlite3.connect(os.path.join("./reimei_databases/", path))
-        cursor = connection.cursor()
+        client = create_client(f'file://{os.path.join(". / reimei_databases / ", path)}')
         await new_connection.finish(f"哒！成功连接到数据库“{os.path.join('./reimei_databases/', path)}”！")
     else:
         await new_connection.finish("咱连接数据库得加上数据库文件名嗷！")
@@ -69,9 +70,7 @@ async def listDatabases():
 @execute_command.handle()
 async def executeCommand(args: Message = CommandArg()):
     if command := args.extract_plain_text().strip():
-        cursor.execute(command)
-        connection.commit()
-        if response := cursor.fetchall():
+        if response := await client.execute(command):
             await execute_command.finish(str(response))
         else:
             await execute_command.finish("SQL命令成功执行！")
@@ -81,7 +80,7 @@ async def executeCommand(args: Message = CommandArg()):
 
 @drop_connection.handle()
 async def dropConnection():
-    connection.close()
+    await client.close()
     await drop_connection.finish("已成功与数据库断开连接！")
 
 
