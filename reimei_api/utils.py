@@ -112,7 +112,6 @@ async def key_value2dict(text: str) -> dict | str:
         return str(error)
 
 
-
 async def CQ2dict(string: str) -> dict:
     """
     把单个CQ码转换为onebot的消息段格式的dict
