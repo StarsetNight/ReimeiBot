@@ -7,13 +7,15 @@
 依据MIT许可证效力，衍生项目需保证本版权声明原封不动，可以增添“原”前缀以免与您的衍生项目混淆
 """
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
+
+from typing import ClassVar
 
 
-class Config(BaseModel, extra=Extra.ignore):
+class Config(BaseModel):
     """Plugin Config Here"""
     # 权限设置
-    docs = """【ReimeiBot数据库管理系统】
+    docs: ClassVar[str] = """【ReimeiBot数据库管理系统】
 /db.list：列出目录下全部数据库
 /db.connect <file>：连接数据库
 /db.run <SQL command>：执行命令

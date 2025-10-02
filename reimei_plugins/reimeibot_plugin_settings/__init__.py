@@ -9,7 +9,7 @@
 
 import nonebot
 import sqlite3
-from nonebot import on_command, CommandGroup
+from nonebot import on_command, CommandGroup, get_plugin_config
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.internal.rule import Rule
 from nonebot.params import CommandArg
@@ -25,13 +25,13 @@ from nonebot.plugin import PluginMetadata
 
 driver = nonebot.get_driver()
 global_config = driver.config
-config = Config.parse_obj(global_config)
+config = get_plugin_config(Config)
 
-global_config.superusers = {}  # 最高管理者
-global_config.maintainers = {}  # 维护员
-global_config.blacklist = {}  # 黑名单
+global_config.superusers = set()  # 最高管理者
+global_config.maintainers = set()  # 维护员
+global_config.blacklist = set()  # 黑名单
 global_config.nickname = config.bot_nickname  # 昵称
-global_config.global_whitelist = {}  # 全局白名单，一些通用插件可以使用这个
+global_config.global_whitelist = set()  # 全局白名单，一些通用插件可以使用这个
 
 connection: sqlite3.Connection
 cursor: sqlite3.Cursor

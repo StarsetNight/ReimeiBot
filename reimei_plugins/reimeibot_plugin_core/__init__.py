@@ -8,7 +8,7 @@
 """
 
 import nonebot
-from nonebot import get_driver
+from nonebot import get_driver, get_plugin_config
 from nonebot import on_command, CommandGroup
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
@@ -22,7 +22,7 @@ from nonebot.plugin import PluginMetadata
 
 driver = get_driver()
 global_config = driver.config
-config = Config.parse_obj(global_config)
+config = get_plugin_config(Config)
 
 # 注册插件
 __plugin_meta__ = PluginMetadata(
