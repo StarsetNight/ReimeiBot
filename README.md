@@ -1,23 +1,22 @@
 # ReimeiBot
-There is an English version for reading: [English Version](https://github.com/3rdBit/ReimeiBot/blob/master/README_EN.md)
-### 开发说明
-本项目基于[NoneBot2](https://github.com/nonebot/nonebot2)，遵循[OneBot](https://onebot.dev)协议。  
-ReimeiBot使用MIT协议。  
-### 所有者说明
-项目名称：ReimeiBot  
-项目作者：StarsetNight（化名：何星夕，网名：星夕Starset）  
-许可协议：MIT许可证  
+A lightweight, customizable bot framework inspired by NoneBot2.
 
-版权所有 (c) 2023 星夕Starset  
-### 介绍 
-> 扬帆起航吧，黎明！  
-> 飞向远方吧，流星！  
-标准化、客制化、简约化、轻便化，这是我们的希望。 
-希望ReimeiBot也可以成为这样的一个类NoneBot2机器人框架！
-### 如何构建
-实诚抱歉，ReimeiBot基于NoneBot2的引擎，NoneBot2的插件加载方式使得机器人项目不被建议构建成二进制可执行文件。  
-### 贡献者名单
-- 星夕Starset: [GitHub](https://github.com/StarsetNight) [BiliBili](https://space.bilibili.com/477677552)  
-### 鸣谢名单
-暂无  
-**Powered by 3rdBit Studio**  
+## About the Project
+ReimeiBot is a NoneBot2-like bot framework built on the [NoneBot2](https://github.com/nonebot/nonebot2) engine and fully compliant with the [OneBot](https://onebot.dev) protocol. It's open-sourced under the **MIT License** — feel free to use, modify, and distribute it as needed.
+
+## Core Principles
+We designed ReimeiBot around four key pillars to balance functionality and usability:
+- **Standardization**: Follows industry protocols (OneBot) for seamless integration with existing tools.
+- **Customization**: Flexible architecture to adapt to diverse use cases (personal bots, enterprise tools, etc.).
+- **Simplification**: Minimalist design to reduce learning costs and improve development efficiency.
+- **Lightweighting**: Optimized resource usage to run smoothly on low-spec devices.
+
+## Building the Project
+ReimeiBot relies on NoneBot2's plugin loading system, which is inherently dynamic. **We do not recommend bundling it into a binary executable** — this would break the plugin extensibility that makes NoneBot2-based projects flexible.
+
+For deployment, follow the standard NoneBot2 setup workflow (see [NoneBot2 Docs](https://nonebot.dev/docs/quick-start) for details).
+
+## Contributors
+Huge thanks to these developers for their contributions:
+- **StarsetNight**: [GitHub](https://github.com/StarsetNight) | [Bilibili](https://space.bilibili.com/477677552)
+- **XuanRikka**: [GitHub](https://github.com/XuanRikka) | [Bilibili](https://space.bilibili.com/649328358)

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 StarsetNight, XuanRikka
+# SPDX-License-Identifier: MIT
+
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
 
 import hashlib
