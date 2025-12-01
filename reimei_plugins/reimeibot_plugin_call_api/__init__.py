@@ -1,6 +1,6 @@
 # Copyright (c) 2023 StarsetNight, XuanRikka
 # SPDX-License-Identifier: MIT
-from nonebot import get_driver
+from nonebot import get_driver, get_plugin_config
 from nonebot.plugin import PluginMetadata
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
@@ -18,7 +18,7 @@ from json.decoder import JSONDecodeError
 
 driver = get_driver()
 global_config = driver.config
-config = Config.parse_obj(global_config)
+config = get_plugin_config(Config)
 
 __plugin_meta__ = PluginMetadata(
     name="Reimei GoCQAPI",

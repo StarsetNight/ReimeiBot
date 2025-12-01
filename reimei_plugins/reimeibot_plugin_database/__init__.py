@@ -4,10 +4,9 @@
 import nonebot
 import os
 import sqlite3
-from nonebot import CommandGroup
+from nonebot import CommandGroup, get_plugin_config
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
-from nonebot import require
 
 from reimei_api.help import getHelp
 from .config import Config
@@ -17,7 +16,7 @@ from nonebot.plugin import PluginMetadata
 
 driver = nonebot.get_driver()
 global_config = driver.config
-config = Config.parse_obj(global_config)
+config = get_plugin_config(Config)
 
 connection: sqlite3.Connection
 cursor: sqlite3.Cursor

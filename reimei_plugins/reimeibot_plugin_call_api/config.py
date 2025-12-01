@@ -1,10 +1,12 @@
 # Copyright (c) 2023 StarsetNight, XuanRikka
 # SPDX-License-Identifier: MIT
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
+
+from typing import ClassVar
 
 
-class Config(BaseModel, extra=Extra.ignore):
+class Config(BaseModel):
     """Plugin Config Here"""
-    docs = """【ReimeiBot GoCQAPI快捷调用】
+    docs: ClassVar[str] = """【ReimeiBot GoCQAPI快捷调用】
     /call_api [api名] [json数据]"""

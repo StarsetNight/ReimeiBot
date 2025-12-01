@@ -6,7 +6,7 @@ from .config import Config
 
 driver = nonebot.get_driver()
 global_config = driver.config
-config = Config.parse_obj(global_config)
+config = nonebot.get_plugin_config(Config)
 
 
 async def isAllowed(event: nonebot.adapters.Event):
