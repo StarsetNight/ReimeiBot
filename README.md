@@ -1,6 +1,12 @@
 # ReimeiBot
 A lightweight, customizable bot framework inspired by NoneBot2.
 
+## Warning
+
+This project is archived.
+
+For new projects, we recommend using NoneBot2 directly or other actively maintained frameworks.
+
 ## About the Project
 ReimeiBot is a NoneBot2-like bot framework built on the [NoneBot2](https://github.com/nonebot/nonebot2) engine and fully compliant with the [OneBot](https://onebot.dev) protocol. It's open-sourced under the **MIT License** — feel free to use, modify, and distribute it as needed.
 
